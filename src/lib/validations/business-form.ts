@@ -40,7 +40,9 @@ const websiteSchema = z
       const withProtocol = /^https?:\/\//i.test(s) ? s : `https://${s}`;
       try {
         const u = new URL(withProtocol);
-        return u.protocol === "http:" || u.protocol === "https:";
+        if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+        // Require a proper domain (has a TLD / dot)
+        return u.hostname.includes(".");
       } catch {
         return false;
       }
